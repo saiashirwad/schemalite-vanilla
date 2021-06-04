@@ -1,10 +1,10 @@
 let card = document.getElementById("hidden_card");
 
 /**
- * Clone and unhide hidden element
- * @param {HTMLElement} node 
- * @returns  {HTMLElement}
- */
+* Clone and unhide hidden element
+* @param {HTMLElement} node 
+* @returns  {HTMLElement}
+*/
 function copyHidden(node) {
   let new_node = node.cloneNode(true);
   new_node.removeAttribute("hidden");
@@ -14,17 +14,15 @@ function copyHidden(node) {
 
 let a1 = document.body.appendChild(copyHidden(card));
 
-function addCallback(node, action, callback) {
-  return node.addEventListener(action, callback)
-}
 
 /**
- * Make yo HTMLElements *editable*
- * @param {HTMLElement} node 
- * @returns {HTMLElement}
- */
+* Make yo HTMLElements *editable*
+* @param {HTMLElement} node 
+* @returns {HTMLElement}
+*/
 function Editable(node) {
   var editable = false
+
   node.ondblclick = _ => {
     node.contentEditable = !editable;
     console.log("EDIT MEEE BOYYYYY")
@@ -33,10 +31,10 @@ function Editable(node) {
 }
 
 /**
- * Make yo HTMLElements *draggable*
- * @param {HTMLElement} node 
- * @returns {HTMLElement}
- */
+* Make yo HTMLElements *draggable*
+* @param {HTMLElement} node 
+* @returns {HTMLElement}
+*/
 function Draggable(node) {
   var x1, y1, x2, y2 = 0;
   node.onmousedown = e => {
@@ -44,11 +42,14 @@ function Draggable(node) {
     x2 = e.clientX;
     y2 = e.clientY;
 
+    node.style.zIndex = 3;
+    
     document.onmouseup = _ => {
       document.onmouseup = null;
       document.onmousemove = null;
+      node.style.zIndex = 9;
     }
-
+    
     document.onmousemove = e => {
       e.preventDefault();
       x1 = x2 - e.clientX;
@@ -63,7 +64,6 @@ function Draggable(node) {
 }
 
 Draggable(a1)
-Editable(a1)
 
 document.body.addEventListener("click", function(e) {
   if (this === e.target) {
@@ -71,10 +71,10 @@ document.body.addEventListener("click", function(e) {
   }
 }, true)
 
-let button = document.getElementById("adddiv")
+let button = document.getElementById("addTable")
 button.onclick = _ => {
   let node = document.body.appendChild(copyHidden(card))
-  node.querySelector("#title").innerHTML = "Hey boi!"
+  node.querySelector("#title").innerHTML = "table_name"
   return Editable(Draggable(node))
 }
 
@@ -85,7 +85,7 @@ button.onclick = _ => {
 //  */
 function clickInsideElement(e, className) {
   var node = e.srcElement || e.target
-
+  
   if (node.classList.contains(className)) {
     return node;
   } else {
@@ -95,15 +95,15 @@ function clickInsideElement(e, className) {
       }
     }
   }
-
+  
   return false;
 }
 
 function getPosition(e) {
   var x, y  = 0;
-
+  
   if (!e) var e = window.event;
-
+  
   if (e.pageX || e.pageY) {
     x = e.pageX
     y = e.pageY
@@ -111,7 +111,7 @@ function getPosition(e) {
     x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
     y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
   }
-
+  
   return {
     x: x,
     y: y
@@ -126,23 +126,61 @@ function getPosition(e) {
   var menu = document.querySelector("#context-menu");
   var menuState = 0;
   var activeClassName = "context-menu--active"
-
+  
   var menuPosition;
   var menuX;
   var menuY;
-
+  
+  var menuWidth;
+  var menuHeight;
+  
+  var windowWidth;
+  var windowHeight;
+  
+  
+  var clickCoords;
+  var clickX;
+  var clickY;
+  
   function init() {
     contextListener();
     clickListener();
     keyUpListener();
   }
-
-
+  
+  
   function positionMenu(e) {
-    menuPosition = getPosition(e);
-    console.log(menuPosition);
-  }
+    clickCoords = getPosition(e);
+    clickX = clickCoords.x
+    clickY = clickCoords.y
+    
+    // menuPosition = getPosition(e);
+    // menuX = menuPosition.x + "px";
+    // menuY = menuPosition.y + "px";
+    
+    // menu.style.left = menuX;
+    // menu.style.top = menuY;
+    
+    menuWidth = menu.offsetWidth + 4;
+    menuHeight = menu.offsetHeight + 4;
+    
+    windowWidth = window.innerWidth;
+    windowHeight = window.innerHeight;
 
+    if ( (windowWidth - clickX) < menuWidth ) {
+      menu.style.left = windowWidth - menuWidth + "px";
+    } else {
+      menu.style.left = clickX + "px";
+    }
+    
+    if ( (windowHeight - clickY) < menuHeight ) {
+      menu.style.top = windowHeight - menuHeight + "px";
+    } else {
+      menu.style.top = clickY + "px";
+    }
+    
+  }
+  
   const contextListener = () => {
     document.addEventListener("contextmenu", function(e) {
       // TODO: refactor
@@ -155,7 +193,7 @@ function getPosition(e) {
       }
     })
   }
-
+  
   const clickListener = () => {
     document.addEventListener("click", (e) => {
       var button = e.which || e.button
@@ -164,7 +202,7 @@ function getPosition(e) {
       }
     })
   }
-
+  
   const keyUpListener = () => {
     window.onkeyup = (e) => {
       if (e.keyCode === 27) {
@@ -172,21 +210,21 @@ function getPosition(e) {
       }
     }
   }
-
+  
   function toggleMenuOn() {
     if (menuState !== 1) {
       menuState = 1
       menu.classList.add(activeClassName)
     }
   }
-
+  
   function toggleMenuOff() {
     if (menuState !== 0) {
       menuState = 0;
       menu.classList.remove(activeClassName);
     }
   }
-
+  
   init();
 })();
 

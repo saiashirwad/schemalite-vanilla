@@ -9,35 +9,50 @@
   <link rel="stylesheet" href="reset.css">
 </head>
 <body>
+  
   <div id="hidden" hidden>
+    
+    
     <div id="hidden_card" class="card" hidden>
-      Hey there!
-      <div id="title"></div>
+      <div id="title">
+        table_name
+      </div>
+      <br>
+      <div class="rows">
+        <div class="row">
+          <div class="row-left" contenteditable="true">sup</div>
+          <div class="row-right">nah</div>
+        </div>
+        <div class="row">
+          <div class="row-left">what up</div>
+          <div class="row-right">nah</div>
+        </div>
+        <div class="row">
+          <div class="row-left">yo</div>
+          <div class="row-right">nah</div>
+        </div>
+      </div>
     </div>
   </div>
-  <button id="adddiv">Add Div!</button>
-
-
+  <button id="addTable">Add Table!</button>
+  
+  
   <nav class="context-menu" id="context-menu">
     <ul class="context-menu__items">
       <li class="context-menu__item">
-        <a href="#" class="context-menu__link">
-          <i class="fa fa-eye"></i> View Task
-        </a>
+        Add Row
       </li>
+      <br>
       <li class="context-menu__item">
-        <a href="#" class="context-menu__link">
-          <i class="fa fa-edit"></i> Edit Task
-        </a>
+        View Task
       </li>
+      <br>
       <li class="context-menu__item">
-        <a href="#" class="context-menu__link">
-          <i class="fa fa-times"></i> Delete Task
-        </a>
+        View Task
       </li>
     </ul>
   </nav>
-
+  
   <script src="script.js"></script>
 </body>
 </html>
