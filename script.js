@@ -13,7 +13,7 @@ function copyHidden(node) {
 }
 
 let a1 = document.body.appendChild(copyHidden(card));
-
+Draggable(a1)
 
 /**
 * Make yo HTMLElements *editable*
@@ -63,7 +63,6 @@ function Draggable(node) {
   return node;
 }
 
-Draggable(a1)
 
 document.body.addEventListener("click", function(e) {
   if (this === e.target) {
@@ -78,11 +77,6 @@ button.onclick = _ => {
   return Editable(Draggable(node))
 }
 
-// /**
-//  * 
-//  * @param {HTMLElement} e 
-//  * @param {string} className 
-//  */
 function clickInsideElement(e, className) {
   var node = e.srcElement || e.target
   
