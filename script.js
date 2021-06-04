@@ -1,5 +1,7 @@
 let card = document.getElementById("hidden_card");
 
+let cards = [];
+
 /**
 * Clone and unhide hidden element
 * @param {HTMLElement} node 
@@ -14,6 +16,8 @@ function copyHidden(node) {
 
 let a1 = document.body.appendChild(copyHidden(card));
 Draggable(a1)
+cards.push(a1);
+console.log(cards)
 
 /**
 * Make yo HTMLElements *editable*
@@ -30,38 +34,6 @@ function Editable(node) {
   return node
 }
 
-/**
-* Make yo HTMLElements *draggable*
-* @param {HTMLElement} node 
-* @returns {HTMLElement}
-*/
-function Draggable(node) {
-  var x1, y1, x2, y2 = 0;
-  node.onmousedown = e => {
-    e.preventDefault();
-    x2 = e.clientX;
-    y2 = e.clientY;
-
-    node.style.zIndex = 3;
-    
-    document.onmouseup = _ => {
-      document.onmouseup = null;
-      document.onmousemove = null;
-      node.style.zIndex = 9;
-    }
-    
-    document.onmousemove = e => {
-      e.preventDefault();
-      x1 = x2 - e.clientX;
-      y1 = y2 - e.clientY;
-      x2 = e.clientX;
-      y2 = e.clientY;
-      node.style.top = (node.offsetTop - y1) + "px"
-      node.style.left = (node.offsetLeft - x1) + "px"
-    }
-  }
-  return node;
-}
 
 
 document.body.addEventListener("click", function(e) {
@@ -70,11 +42,16 @@ document.body.addEventListener("click", function(e) {
   }
 }, true)
 
+
+
+
 let button = document.getElementById("addTable")
 button.onclick = _ => {
   let node = document.body.appendChild(copyHidden(card))
   node.querySelector("#title").innerHTML = "table_name"
-  return Editable(Draggable(node))
+  node = Editable(Draggable(node))
+  cards.push(node)
+  console.log(cards)
 }
 
 function clickInsideElement(e, className) {
@@ -111,114 +88,3 @@ function getPosition(e) {
     y: y
   }
 }
-
-
-(function() {
-  "use strict";
-  var taskItemClassName = 'task';
-  var taskItems = document.querySelectorAll(".card");
-  var menu = document.querySelector("#context-menu");
-  var menuState = 0;
-  var activeClassName = "context-menu--active"
-  
-  var menuPosition;
-  var menuX;
-  var menuY;
-  
-  var menuWidth;
-  var menuHeight;
-  
-  var windowWidth;
-  var windowHeight;
-  
-  
-  var clickCoords;
-  var clickX;
-  var clickY;
-  
-  function init() {
-    contextListener();
-    clickListener();
-    keyUpListener();
-  }
-  
-  
-  function positionMenu(e) {
-    clickCoords = getPosition(e);
-    clickX = clickCoords.x
-    clickY = clickCoords.y
-    
-    // menuPosition = getPosition(e);
-    // menuX = menuPosition.x + "px";
-    // menuY = menuPosition.y + "px";
-    
-    // menu.style.left = menuX;
-    // menu.style.top = menuY;
-    
-    menuWidth = menu.offsetWidth + 4;
-    menuHeight = menu.offsetHeight + 4;
-    
-    windowWidth = window.innerWidth;
-    windowHeight = window.innerHeight;
-
-    if ( (windowWidth - clickX) < menuWidth ) {
-      menu.style.left = windowWidth - menuWidth + "px";
-    } else {
-      menu.style.left = clickX + "px";
-    }
-    
-    if ( (windowHeight - clickY) < menuHeight ) {
-      menu.style.top = windowHeight - menuHeight + "px";
-    } else {
-      menu.style.top = clickY + "px";
-    }
-    
-  }
-  
-  const contextListener = () => {
-    document.addEventListener("contextmenu", function(e) {
-      // TODO: refactor
-      if (clickInsideElement(e, "card")) {
-        e.preventDefault();
-        toggleMenuOn();
-        positionMenu(e);
-      } else {
-        toggleMenuOff();
-      }
-    })
-  }
-  
-  const clickListener = () => {
-    document.addEventListener("click", (e) => {
-      var button = e.which || e.button
-      if (button === 1) {
-        toggleMenuOff();
-      }
-    })
-  }
-  
-  const keyUpListener = () => {
-    window.onkeyup = (e) => {
-      if (e.keyCode === 27) {
-        toggleMenuOff();
-      }
-    }
-  }
-  
-  function toggleMenuOn() {
-    if (menuState !== 1) {
-      menuState = 1
-      menu.classList.add(activeClassName)
-    }
-  }
-  
-  function toggleMenuOff() {
-    if (menuState !== 0) {
-      menuState = 0;
-      menu.classList.remove(activeClassName);
-    }
-  }
-  
-  init();
-})();
-
