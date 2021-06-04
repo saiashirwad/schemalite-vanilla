@@ -18,7 +18,6 @@ function addCallback(node, action, callback) {
   return node.addEventListener(action, callback)
 }
 
-
 /**
  * 
  * @param {HTMLElement} node 
@@ -30,11 +29,8 @@ function Editable(node) {
     node.contentEditable = !editable;
     console.log("EDIT MEEE BOYYYYY")
   }
-
   return node
 }
-
-
 
 /**
  * 
@@ -81,3 +77,60 @@ button.onclick = _ => {
   node.querySelector("#title").innerHTML = "Hey boi!"
   return Editable(Draggable(node))
 }
+
+
+
+
+(function() {
+  "use strict";
+  var taskItemClassName = 'task';
+  var taskItems = document.querySelectorAll(".card");
+  var menu = document.querySelector("#context-menu");
+  var menuState = 0;
+  var active = "context-menu--active"
+
+  function init() {
+    
+  }
+
+  const contextListener = () => {
+
+  }
+
+  const clickListener = () => {
+
+  }
+
+  const keyUpListener = () => {
+
+  }
+
+  for (var i = 0, len = taskItems.length; i < len; i ++) {
+    var taskItem = taskItems[i];
+    contextMenuListener(taskItem);
+  }
+
+  /**
+   * 
+   * @param {HTMLElement} node 
+   */
+  function contextMenuListener(node) {
+    node.addEventListener("contextmenu", e => {
+      e.preventDefault();
+      toggleMenuOn();
+    })
+  }
+
+  function toggleMenuOn() {
+    if (menuState !== 1) {
+      menuState = 1
+      menu.classList.add(active)
+    }
+  }
+
+  init();
+})();
+
+document.addEventListener("contextmenu", e => {
+  console.log("EH")
+})

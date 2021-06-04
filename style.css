@@ -16,3 +16,23 @@ body {
   height: 100vh;
   background-color: hsl(202, 40%, 96%);
 }
+
+.context-menu {
+  display: none;
+  color: hsl(222, 5%, 60%);
+  border-radius: 0.5em;
+  position: absolute;
+  max-width: fit-content;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 500;
+  z-index: 10;
+  background-color: hsl(202, 40%, 96%);
+}
+
+.context-menu--active {
+  display: block;
+}
+
+.context-menu > a {
+  color: hsl(222, 5%, 60%);
+}
